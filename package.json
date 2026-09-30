@@ -1,7 +1,10 @@
 {
   "name": "elementor-sticky-ui",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
-  "scripts": { "test": "node --test" }
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check src/sticky-toc.js && node --check src/sticky-sidebar.js && node --check src/share-button.js && node --check src/elementor-init.js"
+  }
 }
