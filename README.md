@@ -1,55 +1,73 @@
 # Elementor Sticky UI
 
-Reusable sticky table-of-contents behavior for long web pages, based on the working section-navigation implementation in the source website. It includes heading IDs, searchable horizontal section links, sticky-header offset, active-section highlighting, and an optional floating Web Share/clipboard button.
+A reusable sticky table of contents, generic sticky sidebars, and floating share action for Elementor, WordPress, or plain HTML pages.
 
-## Features
+## What works
 
-- Generates a TOC from `h2` and `h3` headings.
-- Creates collision-free IDs and preserves existing heading IDs.
-- Filters headings with a search field.
-- Highlights the current section with `IntersectionObserver`.
-- Adapts the sticky offset to a fixed or sticky header and keeps links scrollable on mobile.
-- Shares the page with the Web Share API or copies its URL when available.
+- Sticky searchable TOC generated from page headings
+- Collision-free generated heading IDs
+- Current-section highlighting with IntersectionObserver
+- Header-aware sticky offsets
+- Generic left/right sticky sidebars
+- Responsive fallback to normal flow on narrow screens
+- Floating Web Share / clipboard action
+- Elementor-aware automatic initialization
+- Installable WordPress plugin wrapper
 
-## Installation
+## WordPress / Elementor installation
 
-No package installation is required for the browser demo. For a site, copy `src/sticky-toc.js` and `src/sticky-toc.css` into a child theme or a site-owned plugin and enqueue them locally.
+Copy or clone the repo to:
 
-## Quick start
+```
+wp-content/plugins/elementor-sticky-ui
+```
+
+Then activate **Elementor Sticky UI** in WordPress.
+
+The plugin requires WordPress 6.5+ for native script modules.
+
+The TOC automatically looks for Elementor theme post content, an article, or main content. To make an Elementor container sticky, give it either:
+
+```
+js-sticky-sidebar
+```
+
+as a CSS class, or add the `data-sticky-sidebar` attribute.
+
+No private CPTs, membership logic, scores, production URLs, or client content are used.
+
+## Plain HTML / custom integration
 
 ```js
 import { mountStickyToc } from "./src/sticky-toc.js";
+import { mountStickySidebars } from "./src/sticky-sidebar.js";
+
 mountStickyToc({ contentSelector: "article" });
+mountStickySidebars();
 ```
 
-Open `examples/demo.html` through a local HTTP server to see the interactive example. It needs no remote assets.
+See `examples/demo.html` for two sidebars, a TOC, and the share action.
 
-## Elementor usage
+Run a local server from the repo root, for example:
 
-Place article headings in the Elementor post-content area and add a stable CSS class such as `article-content` to its wrapper. Enqueue the module and stylesheet from a child theme or site plugin, then call `mountStickyToc({ contentSelector: ".article-content" })` after the content is present. For a generic site outside Elementor, use a semantic `<main>` or `<article>` and the same module.
+```sh
+python3 -m http.server 8000
+```
 
-## Configuration and expected output
+then open `http://localhost:8000/examples/demo.html`.
 
-`contentSelector`, `headingSelector`, and `headerSelector` are configurable. The module returns a handle with `nav` and `destroy()`; it returns `null` when fewer than two headings are found. The share helper returns `shared`, `copied`, or `unavailable`.
-
-## Architecture
-
-`src/sticky-toc.js` handles DOM discovery, generated links, search, sticky offset, and active-section observation. `src/sticky-toc.css` is generic responsive styling. `src/share-button.js` contains the optional share fallback. The demo is static HTML and does not require WordPress.
-
-## Development and testing
+## Development
 
 ```sh
 npm test
-node --check src/sticky-toc.js
-node --check src/share-button.js
+npm run check
+php -l elementor-sticky-ui.php
 ```
-
-The tests cover pure ID generation and share payloads. Browser and Elementor runtime checks are still required before this project can be marked ready.
 
 ## Security
 
-The module does not send page content anywhere. The share helper only sends the page title and URL through browser-native sharing or clipboard APIs. Do not add private site content or production URLs to examples.
+The package does not transmit page content. The share helper uses browser-native sharing or clipboard APIs only.
 
-## Licence
+## License
 
 Apache-2.0. See `LICENSE`.
