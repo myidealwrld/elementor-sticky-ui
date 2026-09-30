@@ -3,35 +3,42 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Sticky navigation demo</title>
+  <title>Sticky UI demo</title>
   <link rel="stylesheet" href="../src/sticky-toc.css">
   <style>
-    body { margin:0; color:#20382d; font:16px/1.65 system-ui,sans-serif; }
-    header { position:sticky; top:0; z-index:30; padding:12px 5vw; background:#20382d; color:#fff; }
-    header p { margin:0; font-weight:700; }
-    main { max-width:760px; margin:36px auto; padding:0 22px 80px; }
-    article section { min-height:60vh; padding-block:18px; border-bottom:1px solid #d5dacf; }
-    h1,h2 { font-family:Georgia,serif; line-height:1.15; }
-    .share { position:fixed; right:18px; bottom:18px; z-index:40; padding:11px 16px; border:0; border-radius:5px; background:#b14d32; color:white; font-weight:700; cursor:pointer; }
+    body { margin:0; color:#20382d; font:16px/1.65 system-ui,sans-serif; background:#faf9f5 }
+    header { position:sticky; top:0; z-index:30; padding:12px 5vw; background:#20382d; color:#fff }
+    header p { margin:0; font-weight:700 }
+    .layout { display:grid; grid-template-columns:220px minmax(0,760px) 220px; gap:28px; max-width:1280px; margin:36px auto; padding:0 22px 100px }
+    aside { padding:14px; border:1px solid #d5dacf; border-radius:8px; background:white }
+    aside h2 { margin-top:0; font-size:16px }
+    article section { min-height:60vh; padding-block:18px; border-bottom:1px solid #d5dacf }
+    h1,h2 { font-family:Georgia,serif; line-height:1.15 }
+    .sticky-action { padding:11px 16px; border:0; border-radius:5px; background:#b14d32; color:white; font-weight:700; cursor:pointer }
+    @media (max-width:900px) { .layout { grid-template-columns:1fr } }
   </style>
 </head>
 <body>
   <header class="site-header"><p>Generic article header</p></header>
-  <main>
-    <h1>Reusable article navigation</h1>
-    <p>This page demonstrates sticky section navigation and an optional share action with generic sample copy.</p>
-    <article>
-      <section><h2>Overview</h2><p>A sticky table of contents can keep long-form pages navigable without depending on a theme or account.</p></section>
-      <section><h2>Responsive behavior</h2><p>On narrow screens the section links remain horizontally scrollable and the search field stays compact.</p></section>
-      <section><h2>Elementor integration</h2><p>Use a CSS class on the article wrapper and enqueue the module and stylesheet from a child theme or small site plugin.</p></section>
-    </article>
-  </main>
-  <button class="share" type="button" data-share-page>Share page</button>
-  <script type="module">
-    import { mountStickyToc } from "../src/sticky-toc.js";
-    import { sharePage } from "../src/share-button.js";
-    mountStickyToc({ contentSelector: "article" });
-    document.querySelector("[data-share-page]").addEventListener("click", () => sharePage({ title: document.title }));
-  </script>
+  <div class="layout">
+    <aside data-sticky-sidebar>
+      <h2>Left sidebar</h2>
+      <p>Add <code>data-sticky-sidebar</code> or the class <code>js-sticky-sidebar</code> to any Elementor container.</p>
+    </aside>
+    <main>
+      <h1>Reusable article navigation</h1>
+      <article>
+        <section><h2>Overview</h2><p>A sticky TOC and sidebars can keep long-form pages navigable without depending on private data.</p></section>
+        <section><h2>Responsive behavior</h2><p>On narrow screens the sidebars return to normal document flow and the TOC links remain scrollable.</p></section>
+        <section><h2>Elementor integration</h2><p>The WordPress plugin wrapper auto-loads the modules and detects Elementor post-content wrappers.</p></section>
+      </article>
+    </main>
+    <aside class="js-sticky-sidebar">
+      <h2>Right sidebar</h2>
+      <p>This side can hold references, related links, or other generic content.</p>
+    </aside>
+  </div>
+  <button class="sticky-action" type="button" data-share-page>Share page</button>
+  <script type="module" src="../src/elementor-init.js"></script>
 </body>
 </html>
